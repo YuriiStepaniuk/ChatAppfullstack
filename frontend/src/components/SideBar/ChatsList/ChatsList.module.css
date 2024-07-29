@@ -8,3 +8,22 @@
   color: rgb(86, 240, 246);
   margin-left: 20px;
 }
+
+.newChat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn {
+  padding: 4px 12px;
+  margin-right: 8px;
+  background: #fff;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  color: aqua;
+  cursor: pointer;
+}
