@@ -1,0 +1,32 @@
+.main {
+  height: 10%;
+  width: 100%;
+  background-color: #efecec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.input {
+  width: 90%;
+  padding: 8px 12px;
+  color: grey;
+  margin: 12px;
+  border-radius: 8px;
+  border: 0.5px solid grey;
+}
+
+.icon {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: 5%;
+  transition: 0.3s;
+  color: grey;
+}
+
+.icon:hover {
+  color: aquamarine;
+  cursor: pointer;
+}

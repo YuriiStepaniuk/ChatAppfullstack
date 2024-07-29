@@ -1,0 +1,10 @@
+.main {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.chat {
+  color: rgb(86, 240, 246);
+  margin-left: 20px;
+}

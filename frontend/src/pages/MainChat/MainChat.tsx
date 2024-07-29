@@ -1,7 +1,13 @@
+import styles from "./MainChat.module.css";
+
+import ChatWindow from "../../components/Chat/ChatWindow";
+import SideBar from "../../components/SideBar/SideBar";
+
 const MainChat = () => {
   return (
-    <div>
-      <h1>This is MainChat page</h1>
+    <div className={styles.main}>
+      <SideBar />
+      <ChatWindow />
     </div>
   );
 };

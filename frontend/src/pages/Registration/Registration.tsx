@@ -1,7 +1,16 @@
+import styles from "./Registration.module.css";
+
+import CustomButton from "../../components/UI/CustomButton/CustomButton";
+import CustomInput from "../../components/UI/CustomInput/CustomInput";
+
 const Registration = () => {
   return (
-    <div>
-      <h1>This is Registration page</h1>
+    <div className={styles.main}>
+      <h1>Register</h1>
+      <CustomInput placeholder="E-mail" />
+      <CustomInput placeholder="User Name" />
+      <CustomInput placeholder="Password" />
+      <CustomButton btnText="Register" />
     </div>
   );
 };

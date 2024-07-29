@@ -1,0 +1,44 @@
+.main {
+  height: 72px;
+  margin: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid black;
+}
+
+.userImage {
+  width: 40px;
+  height: 40px;
+  flex: 1;
+}
+
+.userDescription {
+  flex: 7;
+  margin-left: 8px;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-evenly;
+}
+
+.nameDate {
+  height: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.date {
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.message {
+  font-size: 10px;
+}
