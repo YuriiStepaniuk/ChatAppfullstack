@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Registration from "./pages/Registration/Registration";
 import Login from "./pages/Login/Login";
 import MainChat from "./pages/MainChat/MainChat";
+import ChatWindow from "./components/Chat/ChatWindow";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,12 @@ const router = createBrowserRouter([
   {
     path: "/chat",
     element: <MainChat />,
+    children: [
+      {
+        path: ":chatId",
+        element: <ChatWindow />,
+      },
+    ],
   },
 ]);
 

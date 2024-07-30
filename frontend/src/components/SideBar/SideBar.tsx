@@ -4,20 +4,11 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"; // Import
 
 import ChatsList from "./ChatsList/ChatsList";
 import styles from "./SideBar.module.css";
+import { useNavigate } from "react-router-dom";
 
-// interface LastMessage {
-//   text: string;
-//   date: string;
-// }
-
-// export interface Chat {
-//   chatName: string;
-//   username: string;
-//   lastMessage: LastMessage | null;
-// }
-
-const SideBar = () => {
+const SideBar = ({ setSelectedChat }: { setSelectedChat: any }) => {
   const [chats, setChats] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -30,6 +21,7 @@ const SideBar = () => {
         });
         const data = await response.json();
         setChats(data);
+        console.log(chats);
       } catch (error) {
         console.error("Failed to fetch chats:", error);
       }
@@ -37,6 +29,13 @@ const SideBar = () => {
 
     fetchChats();
   }, []);
+
+  const handleChatClick = (chatId: string) => {
+    setSelectedChat(chatId);
+    console.log(chatId);
+
+    navigate(`/chat/${chatId}`);
+  };
 
   return (
     <div className={styles.main}>
@@ -58,7 +57,7 @@ const SideBar = () => {
         <FontAwesomeIcon className={styles.icon} icon={faMagnifyingGlass} />
       </div>
 
-      <ChatsList chats={chats} />
+      <ChatsList chats={chats} onClick={handleChatClick} />
     </div>
   );
 };

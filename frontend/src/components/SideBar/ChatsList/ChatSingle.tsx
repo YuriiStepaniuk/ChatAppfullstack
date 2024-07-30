@@ -5,11 +5,14 @@ interface IChatSingle {
   userName: string;
   userMessage: string;
   date: string;
+  onClick: any;
 }
 
-const ChatSingle = ({ userName, userMessage, date }: IChatSingle) => {
+const ChatSingle = ({ userName, userMessage, date, onClick }: IChatSingle) => {
+  const handleOnChatClick = () => {};
+
   return (
-    <div className={styles.main}>
+    <div className={styles.main} onClick={onClick}>
       <img className={styles.userImage} src="/user-profile.png" alt="" />
       <div className={styles.userDescription}>
         <div className={styles.nameDate}>

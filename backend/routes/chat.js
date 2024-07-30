@@ -1,46 +1,54 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
 const Message = require("../models/Message");
 const authMiddleware = require("../middleware/auth");
 const Chat = require("../models/Chat");
 
 // Route to send message
-router.post("/send", authMiddleware, async (req, res) => {
-  const { message } = req.body;
-  const username = req.user.username; // Extracted from authMiddleware
-
-  if (!message) {
-    return res.status(400).json({ msg: "Message content is required" });
-  }
-
-  if (!username) {
-    return res.status(400).json({ msg: "Username is required" });
-  }
-
+router.post("/chats/:chatId/send", authMiddleware, async (req, res) => {
   try {
-    const newMessage = new Message({
-      userId: req.user.id,
-      username,
+    const { chatId } = req.params;
+    const { message } = req.body;
+    const userId = req.user.id;
+
+    // Create the message object
+    const newMessage = {
+      userId: new mongoose.Types.ObjectId(userId), // Ensure this is a valid ObjectId
       message,
       date: new Date(),
-    });
+    };
 
-    await newMessage.save();
+    // Find the chat and update it
+    const chat = await Chat.findById(chatId);
+    if (!chat) {
+      return res.status(404).json({ msg: "Chat not found" });
+    }
+
+    chat.messages.push(newMessage);
+    await chat.save();
+
     res.json(newMessage);
   } catch (err) {
-    console.error("Error saving message:", err.message);
-    res.status(500).send("Server error");
+    console.error("Error sending message:", err.message);
+    res.status(500).json({ msg: "Server error", error: err.message });
   }
 });
 
 // Route to get messages for a user
-router.get("/messages", authMiddleware, async (req, res) => {
+router.get("/chats/:chatId/messages", authMiddleware, async (req, res) => {
   try {
-    const messages = await Message.find({}).sort({ date: 1 }); // Sort by date ascending
-    res.json(messages);
-  } catch (err) {
-    console.error("Error fetching messages:", err.message);
-    res.status(500).send("Server error");
+    const { chatId } = req.params;
+    const chat = await Chat.findById(chatId).populate("messages");
+
+    if (!chat) {
+      return res.status(404).json({ msg: "Chat not found" });
+    }
+
+    res.json(chat.messages);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server error" });
   }
 });
 
@@ -79,6 +87,7 @@ router.get("/chats", authMiddleware, async (req, res) => {
 
     // Map over chats to include lastMessage with default values
     const chatData = chats.map((chat) => ({
+      _id: chat._id,
       chatName: chat.name, // Ensure this matches the field in your schema
       username: chat.username, // Ensure this matches the field in your schema
       lastMessage:

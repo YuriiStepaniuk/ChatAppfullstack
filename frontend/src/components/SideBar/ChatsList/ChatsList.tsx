@@ -5,7 +5,15 @@ import styles from "./ChatsList.module.css";
 
 import Modal from "../../Modal/Modal";
 
-const ChatsList = ({ chats }: { chats: any }) => {
+const ChatsList = ({
+  chats,
+  onClick,
+  setUserName,
+}: {
+  chats: any;
+  onClick: any;
+  setUserName: any;
+}) => {
   const [isOpened, setIsOpened] = useState(false);
 
   const handleOpenModal = () => {
@@ -45,6 +53,7 @@ const ChatsList = ({ chats }: { chats: any }) => {
           userName={el.chatName}
           userMessage={el.lastMessage.message}
           date={el.lastMessage.date}
+          onClick={() => onClick(el._id)}
         />
       ))}
     </div>
