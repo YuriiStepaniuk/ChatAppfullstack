@@ -1,13 +1,18 @@
 import ChatMessage from "../ChatMessage/ChatMessage";
 import styles from "./Chat.module.css";
-import messages from "./mockChat";
 
-const Chat = () => {
+const Chat = ({ messages }: { messages: any }) => {
   return (
     <div className={styles.main}>
-      {messages.map((mes, index) => (
-        <ChatMessage key={index} userMessage={mes.message} date={mes.date} />
-      ))}
+      {messages.map((msg: any) => {
+        return (
+          <ChatMessage
+            key={msg._id}
+            userMessage={msg.message}
+            date={msg.date}
+          />
+        );
+      })}
     </div>
   );
 };

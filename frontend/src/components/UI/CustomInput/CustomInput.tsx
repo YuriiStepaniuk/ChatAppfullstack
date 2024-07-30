@@ -1,8 +1,22 @@
 import styles from "./CustomInput.module.css";
 
-const CustomInput = ({ placeholder }: { placeholder: string }) => {
+interface ICustomInput {
+  placeholder: string;
+  value: string;
+  name: string;
+  onChange: (e: any) => void;
+}
+
+const CustomInput = ({ placeholder, value, onChange, name }: ICustomInput) => {
   return (
-    <input className={styles.input} type="text" placeholder={placeholder} />
+    <input
+      className={styles.input}
+      type="text"
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      name={name}
+    />
   );
 };
 

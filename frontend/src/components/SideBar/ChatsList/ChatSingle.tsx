@@ -1,3 +1,4 @@
+import { dateChats } from "../../../util/dateConverter";
 import styles from "./ChatSingle.module.css";
 
 interface IChatSingle {
@@ -13,7 +14,7 @@ const ChatSingle = ({ userName, userMessage, date }: IChatSingle) => {
       <div className={styles.userDescription}>
         <div className={styles.nameDate}>
           <p className={styles.name}>{userName}</p>
-          <p className={styles.date}>{date}</p>
+          <p className={styles.date}>{dateChats(date)}</p>
         </div>
         <p className={styles.message}>{userMessage}</p>
       </div>

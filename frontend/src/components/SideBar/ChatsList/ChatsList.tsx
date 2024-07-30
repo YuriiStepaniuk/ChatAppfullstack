@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 import ChatSingle from "./ChatSingle";
 import styles from "./ChatsList.module.css";
-import chat from "./mockChats";
+
 import Modal from "../../Modal/Modal";
 
-const ChatsList = () => {
+const ChatsList = ({ chats }: { chats: any }) => {
   const [isOpened, setIsOpened] = useState(false);
 
   const handleOpenModal = () => {
@@ -33,15 +33,18 @@ const ChatsList = () => {
           show={isOpened}
           onClose={handleCloseModal}
           onConfirm={handleConfirmModal}
+          deleteUser={false}
+          changeUser={false}
+          addNewUser
         />
       </div>
 
-      {chat.map((el) => (
+      {chats.map((el: any, index: number) => (
         <ChatSingle
-          key={el.date}
-          userName={el.userName}
-          userMessage={el.userMessage}
-          date={el.date}
+          key={index}
+          userName={el.chatName}
+          userMessage={el.lastMessage.message}
+          date={el.lastMessage.date}
         />
       ))}
     </div>

@@ -5,6 +5,12 @@
   justify-content: center;
   align-items: center;
   border-top: 1px solid black;
+  transition: 0.3s;
+}
+
+.main:hover {
+  background-color: aquamarine;
+  cursor: pointer;
 }
 
 .userImage {

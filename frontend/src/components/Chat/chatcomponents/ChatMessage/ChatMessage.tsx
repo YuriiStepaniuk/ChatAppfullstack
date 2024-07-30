@@ -1,3 +1,4 @@
+import { dateChatMessage } from "../../../../util/dateConverter";
 import styles from "./ChatMessage.module.css";
 
 interface IChatMessage {
@@ -11,7 +12,7 @@ const ChatMessage = ({ userMessage, date }: IChatMessage) => {
       <img src="/user-profile.png" alt="user ava" className={styles.img} />
       <div className={styles.messageBox}>
         <p className={styles.message}>{userMessage}</p>
-        <p className={styles.date}>{date}</p>
+        <p className={styles.date}>{dateChatMessage(date)}</p>
       </div>
     </div>
   );
