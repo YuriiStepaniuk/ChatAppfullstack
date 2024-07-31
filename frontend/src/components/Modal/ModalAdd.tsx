@@ -1,44 +1,49 @@
 import { useState } from "react";
 
-const ModalAdd = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    surname: "",
-  });
-
-  const { name, surname } = formData;
-
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+const ModalAdd = ({ onClose, onConfirm }: { onClose: any; onConfirm: any }) => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
+
+    const fullName = `${firstName} ${lastName}`;
+
     try {
-      const response = await fetch("http://localhost:3001/api/users/add", {
+      const response = await fetch("http://localhost:3001/api/chat/chats", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          userId: localStorage.getItem("userId"), // Replace with actual user ID
+          name: fullName,
+        }),
       });
 
-      const result = await response.json();
-
-      if (response.ok) {
-        console.log("User added successfully:", result);
-        // Handle successful form submission (e.g., show a success message)
-      } else {
-        console.error("Failed to add user:", result.message);
-        // Handle error
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Failed to create chat: ${response.status} ${response.statusText}, ${errorText}`
+        );
       }
+
+      const newChat = await response.json();
+      // onChatAdded(newChat);
+
+      // Reset the form
+      onClose(true);
+      setFirstName("");
+      setLastName("");
     } catch (error) {
-      console.error("Error:", error);
-      // Handle network error
+      console.error("Error creating chat:", error);
     }
   };
 
@@ -50,8 +55,8 @@ const ModalAdd = () => {
           type="text"
           id="name"
           name="name"
-          value={name}
-          onChange={handleChange}
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
           required
         />
       </div>
@@ -61,8 +66,8 @@ const ModalAdd = () => {
           type="text"
           id="surname"
           name="surname"
-          value={surname}
-          onChange={handleChange}
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
           required
         />
       </div>

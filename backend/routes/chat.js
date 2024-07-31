@@ -53,18 +53,26 @@ router.get("/chats/:chatId/messages", authMiddleware, async (req, res) => {
 });
 
 // Route to add new User chat
-router.post("/create-chat", async (req, res) => {
-  const { userId, chatName } = req.body;
+router.post("/chats", authMiddleware, async (req, res) => {
+  const { userId, name } = req.body;
+
+  if (!userId || !name) {
+    return res.status(400).json({ message: "User ID and name are required" });
+  }
 
   try {
-    const Chat = new Chat({
+    const newChat = new Chat({
       userId,
-      chatName,
+      name,
       messages: [],
     });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
+
+    await newChat.save();
+
+    res.status(201).json(newChat);
+  } catch (error) {
+    console.error("Error creating chat:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -101,6 +109,41 @@ router.get("/chats", authMiddleware, async (req, res) => {
   } catch (err) {
     console.error("Error fetching chats:", err.message);
     res.status(500).json({ msg: "Server error", error: err.message });
+  }
+});
+
+//Update chat name
+router.put("/chats/:chatId/update", async (req, res) => {
+  const { chatId } = req.params;
+  const { name } = req.body;
+
+  try {
+    const chat = await Chat.findByIdAndUpdate(chatId, { name }, { new: true });
+    if (!chat) return res.status(404).json({ msg: "Chat not found" });
+
+    res.json(chat);
+  } catch (error) {
+    console.error("Error updating chat name:", error);
+    res.status(500).send("Server error");
+  }
+});
+
+//Delete chat
+router.delete("/chats/:chatId/delete", authMiddleware, async (req, res) => {
+  const { chatId } = req.params;
+
+  try {
+    // Find and delete the chat
+    const chat = await Chat.findByIdAndDelete(chatId);
+
+    if (!chat) {
+      return res.status(404).json({ msg: "Chat not found" });
+    }
+
+    res.json({ msg: "Chat deleted successfully" });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
   }
 });
 

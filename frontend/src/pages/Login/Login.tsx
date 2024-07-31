@@ -29,10 +29,14 @@ const Login = () => {
       });
 
       const data = await response.json();
+      const { token, user } = data;
+      console.log(data);
 
       if (response.ok) {
         // Handle successful login
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", user.id);
+        localStorage.setItem("userName", user.username);
         window.location.href = "/chat";
       } else {
         // Handle errors

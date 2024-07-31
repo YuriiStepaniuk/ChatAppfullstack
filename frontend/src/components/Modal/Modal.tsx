@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { useParams } from "react-router-dom";
 
 import styles from "./Modal.module.css";
 import ModalDelete from "./ModalDelete";
@@ -26,15 +27,16 @@ const Modal = ({
   addNewUser,
 }: IModal) => {
   if (!show) return null;
+  const { chatId } = useParams();
 
   let content;
 
   if (deleteUser) {
-    content = <ModalDelete />;
+    content = <ModalDelete chatId={chatId} onClose={onClose} />;
   } else if (changeUser) {
-    content = <ModalChange />;
+    content = <ModalChange show={show} chatId={chatId} onClose={onClose} />;
   } else if (addNewUser) {
-    content = <ModalAdd />;
+    content = <ModalAdd onClose={onClose} onConfirm={onConfirm} />;
   } else {
     <div className={styles.modalFooter}>
       <button className={styles.btn1} onClick={onClose}>

@@ -5,6 +5,7 @@ import Chat from "./chatcomponents/Chat/Chat";
 import SendMessage from "./chatcomponents/sendMessage/SendMessage";
 import styles from "./ChatWindow.module.css";
 import { GET_MESSAGES, SEND_MESSAGE } from "../../constants/routes";
+import Modal from "../Modal/Modal";
 
 type Message = {
   _id: string;
@@ -14,10 +15,42 @@ type Message = {
   date: string;
 };
 
-const ChatWindow = ({ selectedChat, userName }) => {
+const ChatWindow = ({
+  selectedChat,
+  userName,
+}: {
+  selectedChat: any;
+  userName: any;
+}) => {
   const { chatId } = useParams();
-  console.log(chatId);
-  console.log("Selected chat ", selectedChat);
+  const [isOpened, setIsOpened] = useState(false);
+  const [changeUser, setChangeUser] = useState(false);
+  const [deleteUser, setDeleteUser] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsOpened(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsOpened(false);
+  };
+
+  const handleConfirmModal = () => {
+    console.log("Action is confirmed");
+
+    setIsOpened(false);
+  };
+
+  const handleChangeUser = () => {
+    setIsOpened(true);
+    setChangeUser(true);
+    setDeleteUser(false);
+  };
+  const handleDeleteUser = () => {
+    setIsOpened(true);
+    setChangeUser(false);
+    setDeleteUser(true);
+  };
 
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -122,6 +155,16 @@ const ChatWindow = ({ selectedChat, userName }) => {
           alt="user ava"
         />
         <p className={styles.name}>{userName}</p>
+        <button onClick={handleChangeUser}>Change Name</button>
+        <button onClick={handleDeleteUser}>Delete Chat</button>
+        <Modal
+          show={isOpened}
+          onClose={handleCloseModal}
+          onConfirm={handleConfirmModal}
+          deleteUser={deleteUser}
+          changeUser={changeUser}
+          addNewUser={false}
+        />
       </div>
       <Chat messages={messages} />
       <SendMessage onSendMessage={handleSendMessage} />

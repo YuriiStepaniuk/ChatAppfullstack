@@ -37,6 +37,10 @@ const SideBar = ({ setSelectedChat }: { setSelectedChat: any }) => {
     navigate(`/chat/${chatId}`);
   };
 
+  const getUserName = () => {
+    return localStorage.getItem("userName");
+  };
+
   return (
     <div className={styles.main}>
       <div className={styles.searchAndUser}>
@@ -46,7 +50,7 @@ const SideBar = ({ setSelectedChat }: { setSelectedChat: any }) => {
             src="/user-profile.png"
             alt="user"
           />
-          <h2>Hello, NAME</h2>
+          <h2>Hello, {getUserName()}</h2>
           <button className={styles.btn}>Log out</button>
         </div>
         <input
